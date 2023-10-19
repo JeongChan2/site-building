@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자식 XML 태그들은 dev.mvc.cate.CateDAOInter.java interface와 연결됨 -->
+<mapper namespace="dev.mvc.category.CategoryDAOInter">
+  <!-- return: 등록한 레코드 갯수를 리턴, parameterType: 전달받는 데이터 -->
+  <insert id="create" parameterType="dev.mvc.category.CategoryVO">
+  INSERT INTO category(cate_id, cate_name, cate_cnt, rdate) VALUES(category_seq.nextval, #{cate_name},0,sysdate)
+  </insert>
+  
+  <!-- 전체 목록, SQL, -> CateVO -> ArrayList<CateVO> return -->
+  <!-- <select id="list_all" resultType="dev.mvc.cate.CateVO">
+    SELECT cate_id, cate_name, cate_cnt, rdate FROM cate ORDER BY cate_id ASC
+  </select> -->
+  
+  <!-- 출력 모드 적용 -->
+  <select id="list_all" resultType="dev.mvc.category.CategoryVO">
+  SELECT cate_id, cate_name, cate_cnt, rdate, seqno, visible 
+  FROM category 
+  ORDER BY seqno ASC
+  </select>
+  
+  <!-- 출력 모드 적용 -->
+  <select id="list_all_y" resultType="dev.mvc.category.CategoryVO">
+    SELECT cate_id, cate_name, cate_cnt, rdate, seqno, visible 
+    FROM category
+    WHERE visible='Y'
+    ORDER BY seqno ASC
+  </select>
+  
+  <!-- 읽기, SQL, -> CateVO return -->
+  <select id="read" resultType="dev.mvc.category.CategoryVO" parameterType="int">
+    SELECT cate_id, cate_name, cate_cnt, rdate FROM category WHERE cate_id=#{cate_id}
+  </select>
+  
+  <!-- return: 수정한 레코드 갯수를 리턴, parameterType: 수정할 레코드 정보 -->
+  <update id="update" parameterType="dev.mvc.category.CategoryVO">
+  UPDATE category SET cate_name=#{cate_name}, cate_cnt=#{cate_cnt}
+  WHERE cate_id=#{cate_id}
+  </update>
+  
+  <!-- return: 삭제한 레코드 갯수를 리턴, parameterType: 삭제할 레코드 정보-->
+  <delete id="delete" parameterType="int">
+  DELETE FROM category WHERE cate_id=#{cate_id}
+  </delete>
+  
+  <!-- 우선순위 높임, 10등 -> 1등 -->
+  <update id="update_seqno_forward" parameterType="int">
+    UPDATE category SET seqno= seqno - 1 WHERE cate_id=#{cate_id}
+  </update>
+  
+  <!-- 우선순위 낮춤, 1등 -> 10등 -->
+  <update id="update_seqno_backward" parameterType="int">
+    UPDATE category SET seqno= seqno + 1 WHERE cate_id=#{cate_id}
+  </update>
+  
+  <!-- 카테고리 공개 설정 -->
+  <update id="update_visible_y" parameterType="int">
+    UPDATE category SET visible='Y' where cate_id=#{cate_id}
+  </update>
+  
+  <!-- 카테고리 비공개 설정 -->
+  <update id="update_visible_n" parameterType="int">
+    UPDATE category SET visible='N' where cate_id=#{cate_id}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

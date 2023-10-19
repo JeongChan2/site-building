@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.admin_stock.Admin_StockDAOInter">
+  <!-- 로그인 -->
+  <select id="login" resultType="int" parameterType="dev.mvc.admin_stock.Admin_StockVO">
+    SELECT COUNT(*) as cnt
+    FROM admin_stock
+    WHERE admin_id=#{admin_id} AND passwd=#{passwd} 
+  </select>
+  
+  <!-- 관리자 정보 -->
+  <select id="read_by_id" resultType="dev.mvc.admin_stock.Admin_StockVO" parameterType ="String" >
+    SELECT admin_num, admin_id, passwd, mname, mdate, grade 
+    FROM admin_stock
+    WHERE admin_id=#{admin_id}
+  </select>
+  
+  <!-- adminno를 통한 회원 정보 -->
+  <select id="read" resultType="dev.mvc.admin_stock.Admin_StockVO" parameterType ="int" >
+    SELECT admin_num, admin_id, passwd, mname, mdate, grade 
+    FROM admin_stock
+    WHERE admin_num=#{admin_num}
+  </select>
+  
+</mapper>
